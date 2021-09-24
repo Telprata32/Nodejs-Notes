@@ -39,11 +39,13 @@ or
 1. Scripts can be added to the Package JSON to help utomate certain tasks 
 2. Add them to the Package JSON file like so:  
 
+```json
+"scripts": {  
+	"start": "node index.js"		 
+	"say-hello": "echo 'Hello World!'"  
+}  
+```
 
-	"scripts": {  
-		"start": "node index.js"		 
-		"say-hello": "echo 'Hello World!'"  
-	}  
 3. Certain scripts that come available with npm like `npm start` can just be invoked using `npm start` while others may require for example `npm run say-hello`
 
 ## Clearing packages from a projects

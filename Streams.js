@@ -12,7 +12,42 @@ const {createReadStream} = require('fs') // Get the createReadStream function fr
 
 const stream = createReadStream('./content/big.txt')
 
-// Set the event emitter to listen to the stream's return of data
+// This line is to wait until the readable stream is valid before console logging the stream of data
 stream.on('data',(result)=>{
 	console.log(result)
 })
+
+// This catches any errors that happen while creating the readable stream (usually invalid names)
+stream.on('error', (err)=>{
+	console.log(err)
+})
+
+
+// ============= Serving file over HTTP ============== //
+
+// The standard method to serve a file via the http service
+var http = require('http')
+var {readFileSync} = require('fs')
+
+// using readfile doesn't break up the file into chunks, so if the file is big, the transfer will be slow
+http
+	.createServer(function(req,res){
+		const text = readFileSync('./content/big.txt','utf8')
+		res.end(text)
+	})
+	.listen(5000)
+
+// Alternative method: using the createReadStream function, this helps to drastically transmit/transfer small chunks of data to optimize loading speed
+var http = require('http')
+var {createReadStream} = requre('fs')
+
+http
+	.createServer(function(req,res){
+		const filestream = createReadStream('./content/big.txt','utf8')
+		filestream.on('open',()=>{
+			fileStream.pipe(res)
+		})
+		fileStream.on('error',()=>{
+			res.end(err)
+		})
+	})
